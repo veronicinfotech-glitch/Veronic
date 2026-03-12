@@ -717,16 +717,16 @@ function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            // className="hidden sm:block cursor-pointer absolute bottom-10 left-1/2 transform -translate-x-1/2"
+         //   className="hidden sm:block cursor-pointer absolute bottom-10 left-1/2 transform -translate-x-1/2"
             onClick={() => scrollToSection(aboutRef, 'about')}
           >
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              // className="flex flex-col items-center"
+              className="flex flex-col items-center"
             >
               {/* <span className="text-xs text-white/40 mb-2">Scroll</span> */}
-              <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" />
+              {/* <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" /> */}
             </motion.div>
           </motion.div>
         </motion.div>

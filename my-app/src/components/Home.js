@@ -136,6 +136,7 @@ function Home() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [navbarScrolled, setNavbarScrolled] = useState(false);
 
   const { scrollYProgress } = useScroll();
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
@@ -236,15 +237,11 @@ function Home() {
       setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
       setPrevScrollPos(currentScrollPos);
       
-      const navbar = navbarRef.current;
-      if (navbar) {
-        if (currentScrollPos > 50) {
-          navbar.classList.add("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
-          navbar.classList.remove("bg-transparent");
-        } else {
-          navbar.classList.remove("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
-          navbar.classList.add("bg-transparent");
-        }
+      // Simple navbar background change on scroll
+      if (currentScrollPos > 50) {
+        setNavbarScrolled(true);
+      } else {
+        setNavbarScrolled(false);
       }
 
       // Determine which section is in view
@@ -465,44 +462,38 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(120,80,255,0.15),transparent_50%)]" />
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom,rgba(255,80,200,0.15),transparent_50%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-3xl animate-pulse" />
+      {/* Simple Background - No circles */}
+      <div className="fixed inset-0 bg-black">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(120,80,255,0.1),transparent_70%)]" />
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom,rgba(255,80,200,0.1),transparent_70%)]" />
       </div>
 
-      {/* Floating Geometric Shapes - Responsive */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-64 h-64 sm:w-96 sm:h-96 border border-purple-500/10 rounded-full" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 sm:w-[500px] sm:h-[500px] border border-pink-500/10 rounded-full" />
-      </div>
-
-      {/* Navbar */}
-      <nav 
+      {/* Navbar - Simplified */}
+      <motion.nav 
         ref={navbarRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           visible ? 'translate-y-0' : '-translate-y-full'
-        }`}
+        } ${navbarScrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'}`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
-            <div 
+            <motion.div 
               className="flex items-center gap-2 sm:gap-3 group cursor-pointer z-50" 
               onClick={() => scrollToSection(heroRef, 'home')}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
-              <motion.div
-                whileHover={{ rotate: 180 }}
-                transition={{ duration: 0.5 }}
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20"
-              >
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
                 <img src={lolo1} alt="logo" className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg" />
-              </motion.div>
+              </div>
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                 veronic
               </span>
-            </div>
+            </motion.div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
@@ -543,11 +534,12 @@ function Home() {
               </motion.button>
             </Link>
 
-            {/* Mobile Menu Button - Three Lines */}
-            <button
+            {/* Mobile Menu Button */}
+            <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="menu-button md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-white/5 transition-colors z-50"
               aria-label="Toggle menu"
+              whileTap={{ scale: 0.95 }}
             >
               <span className={`w-6 h-0.5 bg-white transform transition-all duration-300 ${
                 isMenuOpen ? 'rotate-45 translate-y-2' : ''
@@ -558,7 +550,7 @@ function Home() {
               <span className={`w-6 h-0.5 bg-white transform transition-all duration-300 ${
                 isMenuOpen ? '-rotate-45 -translate-y-2' : ''
               }`} />
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -571,7 +563,7 @@ function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm md:hidden"
                 onClick={() => setIsMenuOpen(false)}
               />
@@ -582,7 +574,7 @@ function Home() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="absolute top-16 left-0 right-0 mx-4 mt-2 md:hidden bg-gradient-to-b from-gray-900 to-black border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
               >
                 <div className="p-6 space-y-4">
@@ -597,7 +589,7 @@ function Home() {
                       key={item.name}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                     >
                       <Link
                         to={item.to}
@@ -612,7 +604,7 @@ function Home() {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.25 }}
                     className="pt-2"
                   >
                     <Link to="/contact?demo=true" onClick={handleLinkClick}>
@@ -626,19 +618,18 @@ function Home() {
             </>
           )}
         </AnimatePresence>
-      </nav>
+      </motion.nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Exactly the same */}
       <section ref={heroRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
-        {/* Background Shapes - Responsive */}
+        {/* Background Shapes - Removed circles, kept only subtle gradients */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] md:h-[800px] bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-pink-500/10 rounded-full blur-3xl" />
         </div>
 
         {/* Grid Pattern - Responsive */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
             backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
@@ -717,7 +708,6 @@ function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-         //   className="hidden sm:block cursor-pointer absolute bottom-10 left-1/2 transform -translate-x-1/2"
             onClick={() => scrollToSection(aboutRef, 'about')}
           >
             <motion.div
@@ -725,8 +715,7 @@ function Home() {
               transition={{ duration: 2, repeat: Infinity }}
               className="flex flex-col items-center"
             >
-              {/* <span className="text-xs text-white/40 mb-2">Scroll</span> */}
-              {/* <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" /> */}
+              {/* Scroll indicator content (commented out in original) */}
             </motion.div>
           </motion.div>
         </motion.div>
@@ -1123,149 +1112,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
-      {/* <section ref={testimonialsRef} id="testimonials" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12 sm:mb-16 lg:mb-20"
-          >
-            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4 sm:mb-6">
-              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" />
-              <span className="text-xs sm:text-sm text-purple-400">Testimonials</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold px-2">
-              What Our
-              <span className="block bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mt-2">
-                Clients Say
-              </span>
-            </h2>
-            <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-white/60 max-w-3xl mx-auto mt-4 px-2">
-              Real stories from founders, CTOs, and marketing leads who scaled with Veronic
-            </p>
-          </motion.div>
-
-          <div className="relative">
-            <div className="overflow-hidden">
-              <div
-                ref={carouselRef}
-                className="flex gap-4 sm:gap-6 lg:gap-8 transition-transform duration-500 ease-out"
-              >
-                {[
-                  {
-                    name: "Jessie Dan",
-                    title: "CTO, Loomi Analytics",
-                    text: "Veronic didn't just build our platform — they became our strategic tech backbone. The team's deep knowledge of cloud infrastructure saved us months.",
-                    rating: 5,
-                    image: "https://images.unsplash.com/photo-1494790108777-296fd5c2a6f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-                  },
-                  {
-                    name: "Marco P.",
-                    title: "Founder, Vellum Studio",
-                    text: "From the first consultation to the final deployment, Veronic delivered a polished, performant web app. Their design sense and attention to detail are rare.",
-                    rating: 5,
-                    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-                  },
-                  {
-                    name: "Sofia Liu",
-                    title: "Head of Product, Nexis",
-                    text: "Our legacy system was slow and unreliable. Veronic rebuilt it with modern Kubernetes architecture — now we scale effortlessly and uptime is 99.99%.",
-                    rating: 4.5,
-                    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-                  },
-                  {
-                    name: "Tessa Rivera",
-                    title: "Tech Lead, Solace",
-                    text: "The team is incredibly responsive. They migrated us to serverless in under two weeks with zero downtime.",
-                    rating: 5,
-                    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-                  },
-                  {
-                    name: "Kevin Wang",
-                    title: "CMO, Elevate",
-                    text: "We partnered for a complete brand overhaul and web presence. 40% increase in conversion in three months.",
-                    rating: 4,
-                    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-                  }
-                ].map((client, index) => (
-                  <motion.div
-                    key={index}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.05 }}
-                    className="testimonial-card flex-shrink-0 w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)]"
-                  >
-                    <div className="h-full p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 transition-all">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                        <img 
-                          src={client.image} 
-                          alt={client.name}
-                          className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full object-cover border-2 border-purple-500"
-                          loading="lazy"
-                        />
-                        <div>
-                          <h4 className="text-sm sm:text-base lg:text-lg font-bold">{client.name}</h4>
-                          <p className="text-xs sm:text-sm text-white/60">{client.title}</p>
-                        </div>
-                      </div>
-                      
-                      <p className="text-xs sm:text-sm text-white/80 mb-3 sm:mb-4 italic line-clamp-3">"{client.text}"</p>
-                      
-                      <div className="flex gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`w-3 h-3 sm:w-4 sm:h-4 ${
-                              i < Math.floor(client.rating) 
-                                ? 'text-yellow-500 fill-yellow-500' 
-                                : i < client.rating 
-                                  ? 'text-yellow-500 fill-yellow-500 opacity-50'
-                                  : 'text-white/20'
-                            }`} 
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div> */}
-
-            {/* Carousel Controls */}
-            {/* <div className="flex justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handlePrevClick}
-                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={carouselIndex === 0}
-              >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 rotate-180" />
-              </motion.button>
-              
-              <div ref={dotsRef} className="flex gap-1.5 sm:gap-2" />
-              
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleNextClick}
-                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={carouselIndex >= Math.max(0, totalCards - visibleCards)}
-              >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       {/* Why Choose Veronic */}
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">

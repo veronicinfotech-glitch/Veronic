@@ -50,6 +50,7 @@ const ServicesPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [navbarScrolled, setNavbarScrolled] = useState(false);
   
   // Refs
   const heroRef = useRef(null);
@@ -100,22 +101,18 @@ const ServicesPage = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
-  // Handle scroll for navbar
+  // Handle scroll for navbar - simplified
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
       setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
       setPrevScrollPos(currentScrollPos);
       
-      const navbar = navbarRef.current;
-      if (navbar) {
-        if (currentScrollPos > 50) {
-          navbar.classList.add("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
-          navbar.classList.remove("bg-transparent");
-        } else {
-          navbar.classList.remove("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
-          navbar.classList.add("bg-transparent");
-        }
+      // Simple navbar background change on scroll
+      if (currentScrollPos > 50) {
+        setNavbarScrolled(true);
+      } else {
+        setNavbarScrolled(false);
       }
       
       const sections = [
@@ -421,33 +418,29 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      {/* Animated Background - Same as About page */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(120,80,255,0.15),transparent_50%)]" />
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom,rgba(255,80,200,0.15),transparent_50%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-3xl animate-pulse" />
+      {/* Simple Background - No circles */}
+      <div className="fixed inset-0 bg-black">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(120,80,255,0.1),transparent_70%)]" />
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom,rgba(255,80,200,0.1),transparent_70%)]" />
       </div>
 
-      {/* Floating Geometric Shapes */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-64 h-64 border border-purple-500/10 rounded-full" />
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 border border-pink-500/10 rounded-full" />
-      </div>
-
-      {/* Navigation - Updated with proper mobile menu */}
-      <nav 
+      {/* Navigation - Simplified with animations */}
+      <motion.nav 
         ref={navbarRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           visible ? 'translate-y-0' : '-translate-y-full'
-        } bg-transparent`}
+        } ${navbarScrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'}`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 sm:gap-3 group z-50">
               <motion.div
-                whileHover={{ rotate: 180 }}
-                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20"
               >
                 <img src={lolo1} alt="logo" className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg" />
@@ -497,10 +490,11 @@ const ServicesPage = () => {
             </Link>
 
             {/* Mobile Menu Button - Three Lines */}
-            <button
+            <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="menu-button md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-white/5 transition-colors z-50"
               aria-label="Toggle menu"
+              whileTap={{ scale: 0.95 }}
             >
               <span className={`w-6 h-0.5 bg-white transform transition-all duration-300 ${
                 isMenuOpen ? 'rotate-45 translate-y-2' : ''
@@ -511,7 +505,7 @@ const ServicesPage = () => {
               <span className={`w-6 h-0.5 bg-white transform transition-all duration-300 ${
                 isMenuOpen ? '-rotate-45 -translate-y-2' : ''
               }`} />
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -524,7 +518,7 @@ const ServicesPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm md:hidden"
                 onClick={() => setIsMenuOpen(false)}
               />
@@ -535,7 +529,7 @@ const ServicesPage = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="absolute top-16 left-0 right-0 mx-4 mt-2 md:hidden bg-gradient-to-b from-gray-900 to-black border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
               >
                 <div className="p-6 space-y-4">
@@ -550,7 +544,7 @@ const ServicesPage = () => {
                       key={item.name}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                     >
                       <Link
                         to={item.to}
@@ -565,7 +559,7 @@ const ServicesPage = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.25 }}
                     className="pt-2"
                   >
                     <Link to="/contact?demo=true" onClick={handleLinkClick}>
@@ -579,21 +573,20 @@ const ServicesPage = () => {
             </>
           )}
         </AnimatePresence>
-      </nav>
+      </motion.nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Exactly the same */}
       <section ref={heroRef} id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] md:h-[800px] bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-pink-500/10 rounded-full blur-3xl" />
         </div>
 
         {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-            // backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
+            backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
           }} />
         </div>
 

@@ -1125,7 +1125,7 @@ function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section ref={testimonialsRef} id="testimonials" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+      {/* <section ref={testimonialsRef} id="testimonials" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -1237,10 +1237,10 @@ function Home() {
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Carousel Controls */}
-            <div className="flex justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+            {/* <div className="flex justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -1265,7 +1265,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Why Choose Veronic */}
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">

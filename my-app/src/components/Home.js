@@ -501,8 +501,8 @@ function Home() {
               ))}
             </div>
 
-            {/* Desktop CTA */}
-            <Link to="/contact?demo=true" className="hidden md:block">
+            {/* Desktop CTA - Fixed: Proper Link to BookDemo page */}
+            <Link to="/book-demo" className="hidden md:block">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -587,7 +587,7 @@ function Home() {
                     transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
-                    <Link to="/contact?demo=true" onClick={handleLinkClick}>
+                    <Link to="/book-demo" onClick={handleLinkClick}>
                       <button className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                         Book Demo
                       </button>
@@ -612,7 +612,6 @@ function Home() {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-            backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
           }} />
         </div>
 
@@ -1279,7 +1278,7 @@ function Home() {
                 </motion.button>
               </Link>
 
-              <Link to="/contact?demo=true">
+              <Link to="/book-demo">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

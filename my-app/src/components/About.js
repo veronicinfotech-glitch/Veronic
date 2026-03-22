@@ -230,17 +230,29 @@ const About = () => {
 
   // Handle demo button click
   const handleDemoClick = () => {
-    window.location.href = "/contact?demo=true";
+    window.location.href = "/book-demo";
   };
 
-  // Handle PDF download
+  // Handle PDF download - Updated path
   const handlePDFDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/PDF/Java Unit - 1-1.pdf';
-    link.download = 'Java-Unit-1-1.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      // Create a link element
+      const link = document.createElement('a');
+      // Set the href to the PDF file path (the file should be in the public/PDF folder)
+      // For a file in src/PDF/, it needs to be moved to public/PDF/ or imported
+      link.href = '/PDF/Veronic-Brocher.pdf';
+      // Set the download attribute with the filename
+      link.download = 'Veronic-Brocher.pdf';
+      // Append to body
+      document.body.appendChild(link);
+      // Trigger download
+      link.click();
+      // Remove the link
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      alert('Unable to download brochure. Please try again later.');
+    }
   };
 
   return (
@@ -277,12 +289,13 @@ const About = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Added Packages link */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               {[
                 { name: 'Home', to: '/' },
                 { name: 'About', to: '/about' },
                 { name: 'Services', to: '/services' },
+                { name: 'Packages', to: '/packages' },
                 { name: 'Products', to: '/products' },
                 { name: 'Contact', to: '/contact' }
               ].map((item) => (
@@ -305,7 +318,7 @@ const About = () => {
             </div>
 
             {/* Desktop CTA */}
-            <Link to="/contact?demo=true" className="hidden md:block">
+            <Link to="/book-demo" className="hidden md:block">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -336,7 +349,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu Overlay - Added Packages link */}
         <AnimatePresence>
           {isMenuOpen && (
             <>
@@ -364,6 +377,7 @@ const About = () => {
                     { name: 'Home', to: '/' },
                     { name: 'About', to: '/about' },
                     { name: 'Services', to: '/services' },
+                    { name: 'Packages', to: '/packages' },
                     { name: 'Products', to: '/products' },
                     { name: 'Contact', to: '/contact' }
                   ].map((item, index) => (
@@ -386,10 +400,10 @@ const About = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
-                    <Link to="/contact?demo=true" onClick={handleLinkClick}>
+                    <Link to="/book-demo" onClick={handleLinkClick}>
                       <button className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                         Book Demo
                       </button>
@@ -414,7 +428,6 @@ const About = () => {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-            // backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
           }} />
         </div>
 
@@ -473,26 +486,10 @@ const About = () => {
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </span>
           </motion.button>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            onClick={() => scrollToSection(storyRef)}
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex flex-col items-center"
-            >
-              {/* Scroll indicator content (commented out in original) */}
-            </motion.div>
-          </motion.div>
         </motion.div>
       </section>
 
-      {/* Timeline Section */}
+      {/* Timeline Section - Icons Centered */}
       <section ref={storyRef} id="our-story" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-transparent" />
         
@@ -552,11 +549,12 @@ const About = () => {
                       >
                         <div className={`absolute inset-0 bg-gradient-to-r ${event.color} rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity`} />
                         <div className="relative p-5 sm:p-6 lg:p-8 bg-white/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/10">
-                          <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${event.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-6`}>
+                          {/* Icon container - Centered */}
+                          <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${event.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-6 shadow-lg flex items-center justify-center mx-auto md:mx-0`}>
                             <Icon className="w-full h-full text-white" />
                           </div>
-                          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">{event.title}</h3>
-                          <p className="text-sm sm:text-base text-white/60">{event.description}</p>
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 text-center md:text-left">{event.title}</h3>
+                          <p className="text-sm sm:text-base text-white/60 text-center md:text-left">{event.description}</p>
                         </div>
                       </motion.div>
                     </div>
@@ -602,18 +600,17 @@ const About = () => {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -5 }}
-                  className="group relative p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 transition-all"
+                  className="group relative p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 transition-all"
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl sm:rounded-3xl`} />
                   
-                  <div className="relative">
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${value.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-6 shadow-lg`}>
+                  <div className="relative flex flex-col items-center text-center">
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${value.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-6 shadow-lg flex items-center justify-center`}>
                       <Icon className="w-full h-full text-white" />
                     </div>
                     
-                    <h3 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold mb-2 sm:mb-3">{value.title}</h3>
-                    <p className="text-xs sm:text-sm lg:text-base text-white/60 leading-relaxed">{value.description}</p>
+                    <h3 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold mb-2 sm:mb-3 text-center">{value.title}</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-white/60 leading-relaxed text-center">{value.description}</p>
                     
                     {/* Animated border on hover */}
                     <motion.div
@@ -644,7 +641,7 @@ const About = () => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="text-center p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 mx-auto mb-3 sm:mb-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
                     <Icon className="w-full h-full text-white" />
                   </div>
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1 sm:mb-2">
@@ -702,7 +699,7 @@ const About = () => {
               </motion.button>
 
               {/* Book a Demo button - links to Contact page with demo parameter */}
-              <Link to="/contact?demo=true">
+              <Link to="/book-demo">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -771,7 +768,7 @@ const About = () => {
               </ul>
             </div>
 
-            {/* Company */}
+            {/* Company - Added Packages link */}
             <div>
               <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Company</h4>
               <ul className="space-y-2 sm:space-y-2.5">
@@ -783,6 +780,9 @@ const About = () => {
                 </li>
                 <li>
                   <Link to="/services" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Services</Link>
+                </li>
+                <li>
+                  <Link to="/packages" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Packages</Link>
                 </li>
                 <li>
                   <Link to="/products" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Products</Link>

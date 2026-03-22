@@ -346,12 +346,13 @@ const ProductPage = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Added Packages link */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               {[
                 { name: "Home", to: "/" },
                 { name: "About", to: "/about" },
                 { name: "Services", to: "/services" },
+                { name: "Packages", to: "/packages" },
                 { name: "Products", to: "/products" },
                 { name: "Contact", to: "/contact" },
               ].map((item) => (
@@ -376,7 +377,7 @@ const ProductPage = () => {
             </div>
 
             {/* Desktop CTA */}
-            <Link to="/contact?demo=true" className="hidden md:block">
+            <Link to="/book-demo" className="hidden md:block">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -407,7 +408,7 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu Overlay - Added Packages link */}
         <AnimatePresence>
           {isMenuOpen && (
             <>
@@ -435,6 +436,7 @@ const ProductPage = () => {
                     { name: "Home", to: "/" },
                     { name: "About", to: "/about" },
                     { name: "Services", to: "/services" },
+                    { name: "Packages", to: "/packages" },
                     { name: "Products", to: "/products" },
                     { name: "Contact", to: "/contact" },
                   ].map((item, index) => (
@@ -457,10 +459,10 @@ const ProductPage = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
-                    <Link to="/contact?demo=true" onClick={handleLinkClick}>
+                    <Link to="/book-demo" onClick={handleLinkClick}>
                       <button className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                         Book Demo
                       </button>
@@ -1273,7 +1275,7 @@ const ProductPage = () => {
               </ul>
             </div>
 
-            {/* Company */}
+            {/* Company - Added Packages link */}
             <div>
               <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Company</h4>
               <ul className="space-y-2 sm:space-y-2.5">
@@ -1299,6 +1301,14 @@ const ProductPage = () => {
                     className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors"
                   >
                     Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/packages"
+                    className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    Packages
                   </Link>
                 </li>
                 <li>

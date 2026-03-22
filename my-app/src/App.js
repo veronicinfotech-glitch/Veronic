@@ -5,6 +5,8 @@ import Home from "./components/Home";
 import About from "./components/About";
 import ProductPage from './components/Product';
 import Contact from "./components/Contact";
+import Packages  from "./components/Packages";
+import BookDemo from "./components/BookDemo";
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<ServicesSection />} /> {/* Add this line */}
         <Route path="/products" element={<ProductPage />} />
-         <Route path="/contact" element={<Contact />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/book-demo" element={<BookDemo />} />
+
       </Routes>
     </Router>
   );

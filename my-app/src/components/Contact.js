@@ -13,7 +13,8 @@ import {
   Linkedin,
   Instagram,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Download
 } from "lucide-react";
 
 import lolo1 from "../images/lolo1.png";
@@ -179,7 +180,6 @@ const Contact = () => {
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/veronicinfotech-glitch", label: "GitHub", color: "hover:bg-gray-800" },
-    // { icon: Twitter, href: "https://twitter.com", label: "Twitter", color: "hover:bg-blue-500" },
     { icon: Linkedin, href: "https://www.linkedin.com/company/veronic-infotech/?viewAsMember=true", label: "LinkedIn", color: "hover:bg-blue-700" },
     { icon: Instagram, href: "https://www.instagram.com/veronic_infotech?igsh=ZndleDdjajRxYjNq", label: "Instagram", color: "hover:bg-pink-600" }
   ];
@@ -218,12 +218,13 @@ const Contact = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Added Packages link */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               {[
                 { name: 'Home', to: '/' },
                 { name: 'About', to: '/about' },
                 { name: 'Services', to: '/services' },
+                { name: 'Packages', to: '/packages' },
                 { name: 'Products', to: '/products' },
                 { name: 'Contact', to: '/contact' }
               ].map((item) => (
@@ -246,7 +247,7 @@ const Contact = () => {
             </div>
 
             {/* Desktop CTA */}
-            <Link to="/contact?demo=true" className="hidden md:block">
+            <Link to="/book-demo" className="hidden md:block">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -277,7 +278,7 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu Overlay - Added Packages link */}
         <AnimatePresence>
           {isMenuOpen && (
             <>
@@ -305,6 +306,7 @@ const Contact = () => {
                     { name: 'Home', to: '/' },
                     { name: 'About', to: '/about' },
                     { name: 'Services', to: '/services' },
+                    { name: 'Packages', to: '/packages' },
                     { name: 'Products', to: '/products' },
                     { name: 'Contact', to: '/contact' }
                   ].map((item, index) => (
@@ -327,10 +329,10 @@ const Contact = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
-                    <Link to="/contact?demo=true" onClick={handleLinkClick}>
+                    <Link to="/book-demo" onClick={handleLinkClick}>
                       <button className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                         Book Demo
                       </button>
@@ -575,23 +577,6 @@ const Contact = () => {
                     )}
                   </motion.button>
 
-                  {/* Success Message */}
-                  <AnimatePresence>
-                    {formStatus === 'success' && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute -bottom-12 sm:-bottom-16 left-0 right-0 text-center"
-                      >
-                        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400">
-                          <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span className="text-xs sm:text-sm">Thank you! We'll get back to you soon.</span>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
                   {/* Form Note */}
                   <p className="text-xs text-white/30 text-center mt-4 sm:mt-5 lg:mt-6">
                     We'll never share your information with anyone else.
@@ -600,18 +585,129 @@ const Contact = () => {
               </div>
             </motion.div>
           </div>
-
-          {/* Simple Footer Note */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-center mt-12 sm:mt-16 lg:mt-20 text-white/40 text-xs sm:text-sm"
-          >
-            <p>© 2026 veronic. All rights reserved.</p>
-          </motion.div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="relative py-12 sm:py-16 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-8 sm:mb-12">
+            {/* Company Info */}
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+                  <img src={lolo1} alt="logo" className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg" />
+                </div>
+                <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  veronic
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-white/60 leading-relaxed">
+                Building the future through innovative technology solutions.
+              </p>
+              <div className="flex gap-2 sm:gap-3 pt-2">
+                {[
+                  { icon: Instagram, href: 'https://www.instagram.com/veronic_infotech?igsh=ZndleDdjajRxYjNq', label: 'Instagram' },
+                  { icon: Github, href: 'https://github.com/veronicinfotech-glitch', label: 'GitHub' },
+                  { icon: Linkedin, href: 'https://www.linkedin.com/company/veronic-infotech/?viewAsMember=true', label: 'LinkedIn' },
+                  { icon: Mail, href: 'mailto:veronic.infotech@gmail.com', label: 'Email' }
+                ].map((social, i) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={i}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors group"
+                      aria-label={social.label}
+                    >
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/60 group-hover:text-purple-400 transition-colors" />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Solutions */}
+            <div>
+              <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Solutions</h4>
+              <ul className="space-y-2 sm:space-y-2.5">
+                {['Cloud Services', 'Cybersecurity', 'AI & Automation', 'Data Analytics'].map((item) => (
+                  <li key={item}>
+                    <Link to="/services" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company - Added Packages link */}
+            <div>
+              <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Company</h4>
+              <ul className="space-y-2 sm:space-y-2.5">
+                <li>
+                  <Link to="/" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Home</Link>
+                </li>
+                <li>
+                  <Link to="/about" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">About</Link>
+                </li>
+                <li>
+                  <Link to="/services" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Services</Link>
+                </li>
+                <li>
+                  <Link to="/packages" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Packages</Link>
+                </li>
+                <li>
+                  <Link to="/products" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Products</Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Contact</h4>
+              <ul className="space-y-3 sm:space-y-4">
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex-shrink-0 mt-1">
+                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                  </div>
+                  <Link to="/contact" className="text-xs sm:text-sm text-white/60 hover:text-purple-400 transition-colors break-all">
+                    veronic.infotech@gmail.com
+                  </Link>
+                </li>
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex-shrink-0 mt-1">
+                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                  </div>
+                  <Link to="/contact" className="text-xs sm:text-sm text-white/60 hover:text-purple-400 transition-colors">
+                    +91 95106 53051
+                  </Link>
+                </li>
+                <li className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex-shrink-0 mt-1">
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                  </div>
+                  <Link to="/contact" className="text-xs sm:text-sm text-white/60 hover:text-purple-400 transition-colors leading-relaxed">
+                    Rao InfoTech, University Road, Behind Shilpan Onyx, Rajkot, Gujarat 360005
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-6 sm:pt-8 border-t border-white/10 text-center">
+            <p className="text-xs sm:text-sm text-white/40">
+              © 2026 veronic. All rights reserved. | Built with innovation for the future
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

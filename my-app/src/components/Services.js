@@ -148,16 +148,6 @@ const ServicesPage = () => {
     setIsMenuOpen(false);
   };
 
-  // Handle PDF download
-  const handlePDFDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/PDF/Java Unit - 1-1.pdf';
-    link.download = 'Java-Unit-1-1.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const serviceCategories = [
     {
       id: 1,
@@ -450,12 +440,13 @@ const ServicesPage = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Added Packages link */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               {[
                 { name: 'Home', to: '/' },
                 { name: 'About', to: '/about' },
                 { name: 'Services', to: '/services' },
+                { name: 'Packages', to: '/packages' },
                 { name: 'Products', to: '/products' },
                 { name: 'Contact', to: '/contact' }
               ].map((item) => (
@@ -478,7 +469,7 @@ const ServicesPage = () => {
             </div>
 
             {/* Desktop CTA */}
-            <Link to="/contact?demo=true" className="hidden md:block">
+            <Link to="/book-demo" className="hidden md:block">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -509,7 +500,7 @@ const ServicesPage = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu Overlay - Added Packages link */}
         <AnimatePresence>
           {isMenuOpen && (
             <>
@@ -537,6 +528,7 @@ const ServicesPage = () => {
                     { name: 'Home', to: '/' },
                     { name: 'About', to: '/about' },
                     { name: 'Services', to: '/services' },
+                    { name: 'Packages', to: '/packages' },
                     { name: 'Products', to: '/products' },
                     { name: 'Contact', to: '/contact' }
                   ].map((item, index) => (
@@ -559,10 +551,10 @@ const ServicesPage = () => {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
-                    <Link to="/contact?demo=true" onClick={handleLinkClick}>
+                    <Link to="/book-demo" onClick={handleLinkClick}>
                       <button className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                         Book Demo
                       </button>
@@ -650,7 +642,7 @@ const ServicesPage = () => {
         </motion.div>
       </section>
 
-      {/* Service Categories Overview */}
+      {/* Service Categories Overview - Icons Centered */}
       <section ref={overviewRef} id="overview" className="py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -681,17 +673,17 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors"
+                  className="p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 transition-colors"
                 >
-                  <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${category.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6`}>
+                  <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${category.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6 flex items-center justify-center mx-auto`}>
                     <Icon className="w-full h-full text-white" />
                   </div>
                   
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 sm:mb-4">{category.title}</h3>
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 sm:mb-4 text-center">{category.title}</h3>
                   
                   <ul className="space-y-1.5 sm:space-y-2">
                     {category.services.map((service, i) => (
-                      <li key={i} className="flex items-center gap-1.5 sm:gap-2 text-white/60 text-xs sm:text-sm">
+                      <li key={i} className="flex items-center justify-center gap-1.5 sm:gap-2 text-white/60 text-xs sm:text-sm">
                         <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400 flex-shrink-0" />
                         <span className="line-clamp-1">{service}</span>
                       </li>
@@ -704,7 +696,7 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Main Services */}
+      {/* Main Services - Icons Centered */}
       <section className="relative py-12 sm:py-16 md:py-20">
         {mainServices.map((service, index) => {
           const Icon = service.icon;
@@ -738,7 +730,7 @@ const ServicesPage = () => {
                     </div>
 
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-r ${service.gradient} p-3 sm:p-3.5 lg:p-4 flex-shrink-0`}>
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-r ${service.gradient} p-3 sm:p-3.5 lg:p-4 flex-shrink-0 flex items-center justify-center`}>
                         <Icon className="w-full h-full text-white" />
                       </div>
                       <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold">
@@ -804,7 +796,7 @@ const ServicesPage = () => {
         })}
       </section>
 
-      {/* Process Section */}
+      {/* Process Section - Icons Centered */}
       <section ref={processRef} id="process" className="py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 bg-gradient-to-b from-black to-purple-950/20">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -835,16 +827,16 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors"
+                  className="p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 transition-colors"
                 >
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-white/10 mb-3 sm:mb-4">{step.step}</div>
+                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-white/10 mb-3 sm:mb-4 text-center">{step.step}</div>
                   
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6 flex items-center justify-center mx-auto">
                     <Icon className="w-full h-full text-white" />
                   </div>
                   
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">{step.title}</h3>
-                  <p className="text-xs sm:text-sm lg:text-base text-white/60">{step.description}</p>
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 text-center">{step.title}</h3>
+                  <p className="text-xs sm:text-sm lg:text-base text-white/60 text-center">{step.description}</p>
                 </motion.div>
               );
             })}
@@ -852,7 +844,7 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Technologies Section */}
+      {/* Technologies Section - Icons Centered */}
       <section ref={techRef} id="tech" className="py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -881,7 +873,7 @@ const ServicesPage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-center hover:bg-white/10 transition-colors"
+                className="p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-center transition-colors"
               >
                 <span className="text-2xl sm:text-3xl lg:text-4xl mb-1 sm:mb-2 block">{tech.icon}</span>
                 <h3 className="text-xs sm:text-sm lg:text-base font-semibold mb-0.5 sm:mb-1">{tech.name}</h3>
@@ -908,35 +900,36 @@ const ServicesPage = () => {
             </div>
 
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 mb-4 sm:mb-6 lg:mb-8">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 mb-4 sm:mb-6 lg:mb-8 mx-auto w-fit">
                 <Play className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" />
                 <span className="text-xs sm:text-sm">Start Your Journey</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-5 lg:mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-5 lg:mb-6 text-center">
                 Ready to Transform Your
                 <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mt-1 sm:mt-2">
                   Digital Presence?
                 </span>
               </h2>
 
-              <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-white/60 mb-6 sm:mb-8 lg:mb-12 max-w-2xl mx-auto px-2">
+              <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-white/60 mb-6 sm:mb-8 lg:mb-12 max-w-2xl mx-auto px-2 text-center">
                 Let's discuss how we can help you achieve your goals with our expertise and innovative solutions.
               </p>
 
               <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                {/* Packages Download Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handlePDFDownload}
-                  className="group px-5 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full font-semibold text-xs sm:text-sm lg:text-base hover:opacity-90 transition-opacity flex items-center gap-2"
-                >
-                  <span className="flex items-center gap-2">
-                    Packages Download
-                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 group-hover:translate-y-1 transition-transform" />
-                  </span>
-                </motion.button>
+                {/* Packages Button - Now a link to Packages page */}
+                <Link to="/packages">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group px-5 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full font-semibold text-xs sm:text-sm lg:text-base hover:opacity-90 transition-opacity flex items-center gap-2"
+                  >
+                    <span className="flex items-center gap-2">
+                      Packages
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </motion.button>
+                </Link>
 
                 {/* Contact Button */}
                 <Link to="/contact">
@@ -1009,7 +1002,7 @@ const ServicesPage = () => {
               </ul>
             </div>
 
-            {/* Company */}
+            {/* Company - Added Packages link */}
             <div>
               <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Company</h4>
               <ul className="space-y-2 sm:space-y-2.5">
@@ -1021,6 +1014,9 @@ const ServicesPage = () => {
                 </li>
                 <li>
                   <Link to="/services" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Services</Link>
+                </li>
+                <li>
+                  <Link to="/packages" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Packages</Link>
                 </li>
                 <li>
                   <Link to="/products" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Products</Link>

@@ -297,7 +297,7 @@ const WebsitePackagesModal = ({ isOpen, onClose }) => {
                       Get Started <ArrowRight className="w-4 h-4" />
                     </motion.button>
                   </Link>
-                  <Link to="/contact?demo=true" onClick={onClose}>
+                  <Link to="/book-demo" onClick={onClose}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -545,7 +545,7 @@ const AutomationPackagesModal = ({ isOpen, onClose }) => {
                       Get Started <ArrowRight className="w-4 h-4" />
                     </motion.button>
                   </Link>
-                  <Link to="/contact?demo=true" onClick={onClose}>
+                  <Link to="/book-demo" onClick={onClose}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -903,7 +903,7 @@ const MarketingPackagesModal = ({ isOpen, onClose }) => {
                       Get Started <ArrowRight className="w-4 h-4" />
                     </motion.button>
                   </Link>
-                  <Link to="/contact?demo=true" onClick={onClose}>
+                  <Link to="/book-demo" onClick={onClose}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

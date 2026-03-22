@@ -492,7 +492,6 @@ const ProductPage = () => {
             className="absolute inset-0"
             style={{
               backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-              backgroundSize: 'clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px)'
             }}
           />
         </div>

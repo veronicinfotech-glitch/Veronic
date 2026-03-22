@@ -108,7 +108,6 @@ function Home() {
   // Refs for DOM elements
   const navbarRef = useRef(null);
   const canvasRef = useRef(null);
-  const typingElementRef = useRef(null);
   const carouselRef = useRef(null);
   const dotsRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -193,41 +192,20 @@ function Home() {
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
   };
 
-  // Typing effect
+  // Rotating text effect for hero section
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const phrases = [
+    "Engineering the Future",
+    "Deep Tech Intelligence",
+    "Cloud Native Solutions",
+    "AI-Driven Innovation",
+  ];
+
   useEffect(() => {
-    const el = typingElementRef.current;
-    if (!el) return;
-
-    const phrases = [
-      "Engineering the Future",
-      "Deep Tech Intelligence",
-      "Cloud Native Solutions",
-      "AI-Driven Innovation",
-    ];
-    let i = 0,
-      j = 0,
-      deleting = false;
-    let txt = "";
-
-    function type() {
-      const full = phrases[i];
-      txt = deleting ? full.substring(0, j - 1) : full.substring(0, j + 1);
-      j = deleting ? j - 1 : j + 1;
-      el.textContent = txt;
-
-      if (!deleting && j === full.length) {
-        deleting = true;
-        setTimeout(type, 2000);
-      } else if (deleting && j === 0) {
-        deleting = false;
-        i = (i + 1) % phrases.length;
-        setTimeout(type, 300);
-      } else {
-        setTimeout(type, deleting ? 50 : 100);
-      }
-    }
-
-    type();
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   // Update active nav based on scroll position
@@ -501,6 +479,7 @@ function Home() {
                 { name: 'Home', to: '/' },
                 { name: 'About', to: '/about' },
                 { name: 'Services', to: '/services' },
+                { name: 'Packages', to: '/packages' },
                 { name: 'Products', to: '/products' },
                 { name: 'Contact', to: '/contact' }
               ].map((item) => (
@@ -582,6 +561,7 @@ function Home() {
                     { name: 'Home', to: '/' },
                     { name: 'About', to: '/about' },
                     { name: 'Services', to: '/services' },
+                    { name: 'Packages', to: '/packages' },
                     { name: 'Products', to: '/products' },
                     { name: 'Contact', to: '/contact' }
                   ].map((item, index) => (
@@ -593,8 +573,8 @@ function Home() {
                     >
                       <Link
                         to={item.to}
-                        className="block py-3 px-4 text-base text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300"
                         onClick={handleLinkClick}
+                        className="block py-3 px-4 text-base text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300"
                       >
                         {item.name}
                       </Link>
@@ -604,7 +584,7 @@ function Home() {
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.3 }}
                     className="pt-2"
                   >
                     <Link to="/contact?demo=true" onClick={handleLinkClick}>
@@ -620,9 +600,9 @@ function Home() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Hero Section - Exactly the same */}
+      {/* Hero Section */}
       <section ref={heroRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
-        {/* Background Shapes - Removed circles, kept only subtle gradients */}
+        {/* Background Shapes */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-pink-500/10 rounded-full blur-3xl" />
@@ -656,13 +636,16 @@ function Home() {
             <span className="text-xs sm:text-sm font-medium">Welcome to the Future</span>
           </motion.div>
 
-          <div className="typing-wrapper mb-4 sm:mb-6 min-h-[3rem] sm:min-h-[4rem]">
-            <span className="static-headline text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold">🚀</span>
-            <span
-              className="typing-text text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-              ref={typingElementRef}
-            />
-          </div>
+          <motion.div
+            key={currentPhraseIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 sm:mb-6"
+          >
+            {phrases[currentPhraseIndex]}
+          </motion.div>
 
           <motion.p 
             initial={{ opacity: 0, y: 30 }}
@@ -701,22 +684,6 @@ function Home() {
                 Request Consultation
               </motion.button>
             </Link>
-          </motion.div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            onClick={() => scrollToSection(aboutRef, 'about')}
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex flex-col items-center"
-            >
-              {/* Scroll indicator content (commented out in original) */}
-            </motion.div>
           </motion.div>
         </motion.div>
       </section>
@@ -862,7 +829,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section - Modified: Only color change on hover, no movement, icons centered */}
       <section ref={servicesRef} id="services" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
         
@@ -897,7 +864,7 @@ function Home() {
                 icon: Code2,
                 color: "from-blue-500 to-cyan-500",
                 img: s1,
-                path: "/services#application-development"
+                path: "/services"
               },
               {
                 name: "Brand Marketing",
@@ -905,7 +872,7 @@ function Home() {
                 icon: Megaphone,
                 color: "from-orange-500 to-pink-500",
                 img: s2,
-                path: "/services#marketing"
+                path: "/services"
               },
               {
                 name: "Custom Software",
@@ -913,7 +880,7 @@ function Home() {
                 icon: Layers,
                 color: "from-green-500 to-emerald-500",
                 img: s3,
-                path: "/services#custom-software"
+                path: "/services"
               },
               {
                 name: "Mobile Apps",
@@ -921,7 +888,7 @@ function Home() {
                 icon: Smartphone,
                 color: "from-purple-500 to-pink-500",
                 img: s4,
-                path: "/services#mobile-apps"
+                path: "/services"
               },
               {
                 name: "Website Development",
@@ -929,7 +896,7 @@ function Home() {
                 icon: Globe,
                 color: "from-cyan-500 to-blue-500",
                 img: s5,
-                path: "/services#website-development"
+                path: "/services"
               },
               {
                 name: "SEO",
@@ -937,7 +904,7 @@ function Home() {
                 icon: Search,
                 color: "from-yellow-500 to-orange-500",
                 img: s6,
-                path: "/services#seo"
+                path: "/services"
               }
             ].map((service, index) => {
               const Icon = service.icon;
@@ -953,20 +920,19 @@ function Home() {
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ y: -5 }}
-                    className="relative p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden cursor-pointer h-full hover:border-purple-500/30 transition-all"
+                    className="relative p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden cursor-pointer h-full transition-all duration-300"
                   >
                     <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                     
-                    <div className="relative">
-                      <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${service.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6 shadow-lg`}>
+                    <div className="relative flex flex-col items-center text-center">
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${service.color} p-3 sm:p-3.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6 shadow-lg flex items-center justify-center`}>
                         <Icon className="w-full h-full text-white" />
                       </div>
                       
-                      <h3 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold mb-2 sm:mb-3">{service.name}</h3>
-                      <p className="text-xs sm:text-sm text-white/60 mb-3 sm:mb-4 line-clamp-2">{service.desc}</p>
+                      <h3 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold mb-2 sm:mb-3 text-center">{service.name}</h3>
+                      <p className="text-xs sm:text-sm text-white/60 mb-3 sm:mb-4 text-center">{service.desc}</p>
                       
-                      <div className="flex items-center gap-1 sm:gap-2 text-purple-400 group-hover:gap-2 sm:group-hover:gap-3 transition-all">
+                      <div className="flex items-center justify-center gap-1 sm:gap-2 text-purple-400 transition-all">
                         <span className="text-xs sm:text-sm font-medium">Learn More</span>
                         <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
                       </div>
@@ -1001,7 +967,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Digital Journey Section */}
+      {/* Digital Journey Section - Modified: Icons centered in tabs */}
       <section ref={journeyRef} id="journey" className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-transparent" />
         
@@ -1026,7 +992,7 @@ function Home() {
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-12 items-start">
-            {/* Left: Tab List */}
+            {/* Left: Tab List - Modified: Icons centered */}
             <motion.div
               variants={fadeLeft}
               initial="hidden"
@@ -1048,7 +1014,7 @@ function Home() {
                     onClick={() => setActiveTab(tab)}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${tab.color} p-1.5 sm:p-2 lg:p-3 flex-shrink-0`}>
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${tab.color} p-1.5 sm:p-2 lg:p-3 flex-shrink-0 flex items-center justify-center`}>
                         <Icon className="w-full h-full text-white" />
                       </div>
                       <div className="flex-1">
@@ -1090,7 +1056,7 @@ function Home() {
               transition={{ duration: 0.4 }}
               className="bg-white/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/10 p-5 sm:p-6 lg:p-8"
             >
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${activeTab.color} p-2 sm:p-2.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6`}>
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${activeTab.color} p-2 sm:p-2.5 lg:p-4 mb-4 sm:mb-5 lg:mb-6 flex items-center justify-center`}>
                 <activeTab.icon className="w-full h-full text-white" />
               </div>
               <h3 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold mb-3 sm:mb-4">{activeTab.label}</h3>
@@ -1189,7 +1155,7 @@ function Home() {
                     className="flex gap-3 sm:gap-4 items-start group cursor-pointer"
                     whileHover={{ x: 5 }}
                   >
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br ${item.color} p-2 sm:p-2.5 lg:p-3 flex-shrink-0 shadow-lg`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br ${item.color} p-2 sm:p-2.5 lg:p-3 flex-shrink-0 shadow-lg flex items-center justify-center`}>
                       <Icon className="w-full h-full text-white" />
                     </div>
                     <div>
@@ -1222,7 +1188,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Technologies Section */}
+      {/* Technologies Section - Modified: Faster speed from right to left */}
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent" />
         
@@ -1247,7 +1213,7 @@ function Home() {
           </motion.div>
 
           <div className="marquee-container relative overflow-hidden">
-            <div className="marquee-content flex animate-marquee">
+            <div className="marquee-content flex animate-marquee-reverse-super-fast">
               {technologies.concat(technologies).map((tech, index) => (
                 <div
                   key={index}
@@ -1419,6 +1385,9 @@ function Home() {
                   <Link to="/services" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Services</Link>
                 </li>
                 <li>
+                  <Link to="/packages" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Packages</Link>
+                </li>
+                <li>
                   <Link to="/products" className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors">Products</Link>
                 </li>
                 <li>
@@ -1469,14 +1438,14 @@ function Home() {
       </footer>
 
       <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        @keyframes marquee-reverse-super-fast {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
+        .animate-marquee-reverse-super-fast {
+          animation: marquee-reverse-super-fast 8s linear infinite;
         }
-        .animate-marquee:hover {
+        .animate-marquee-reverse-super-fast:hover {
           animation-play-state: paused;
         }
         .dot {
